@@ -109,6 +109,16 @@ controller.hears('open the (.*) doors',['message_received'],function(bot,message
   return bot.reply(message, 'Okay');
 });
 
+sys = require('sys')
+var exec = require('child_process').exec;
+
+controller.hears('uptime', 'direct_message', function (bot, message) {
+  function puts(error, stdout, stderr) {
+  //  sys.puts(stdout) 
+    bot.reply(message, stdout);
+  }
+  exec("uptime", puts);
+});
 
 /**
  * AN example of what could be:
