@@ -1,12 +1,12 @@
 /**
- * A Bot for Slack!
- */
+* A Bot for Slack!
+*/
 
 
 /**
- * Define a function for initiating a conversation on installation
- * With custom integrations, we don't have a way to find out who installed us, so we can't message them :(
- */
+* Define a function for initiating a conversation on installation
+* With custom integrations, we don't have a way to find out who installed us, so we can't message them :(
+*/
 
 function onInstallation(bot, installer) {
   if (installer) {
@@ -112,12 +112,28 @@ controller.hears('open the (.*) doors',['message_received'],function(bot,message
 sys = require('sys')
 var exec = require('child_process').exec;
 
-controller.hears('uptime', 'direct_message', function (bot, message) {
+controller.hears('uptime', ['direct_mention', 'mention', 'direct_message'], function (bot, message) {
   function puts(error, stdout, stderr) {
-  //  sys.puts(stdout) 
     bot.reply(message, stdout);
   }
   exec("uptime", puts);
+});
+
+var FeedMe = require('feedme')
+  , parser = new FeedMe()
+  , request = require('request');
+
+controller.hears('crunchy', ['direct_mention', 'mention', 'direct_message'], function (bot, message) {
+  bot.reply(message, 'Crunchyroll...');
+  parser.on('item', function(item) {
+    //bot.reply(message, item['crunchyroll:seriestitle']);
+    if (item['crunchyroll:seriestitle'] == 'Food Wars! Shokugeki no Soma'
+    || item['crunchyroll:seriestitle'] == 'NEW GAME!') {
+      //console.log(item['guid'].text);
+      bot.reply(message, item.title + ' ' + item['guid'].text);
+    }
+  });
+  request('http://feeds.feedburner.com/crunchyroll/rss/anime?format=xml').pipe(parser);
 });
 
 /**
