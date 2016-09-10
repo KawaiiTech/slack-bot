@@ -136,6 +136,15 @@ controller.hears('crunchy', ['direct_mention', 'mention', 'direct_message'], fun
   request('http://feeds.feedburner.com/crunchyroll/rss/anime?format=xml').pipe(parser);
 });
 
+// Writes messages into the Raspberry Pi Unicorn Hat
+controller.hears('pi (.*)', 'direct_message', function (bot, message) {
+  var text = message.match[1];
+  function puts(error, stdout, stderr) {
+    bot.reply(message, "ok! " + text + " " + stdout + stderr);
+  }
+  exec("echo \"" + text + "\" > ../unicorn-phat/sms.txt", puts);
+});
+
 /**
  * AN example of what could be:
  * Any un-handled direct mention gets a reaction and a pat response!
