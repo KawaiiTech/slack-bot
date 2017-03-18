@@ -28,6 +28,7 @@
     "botkit": "0.2.2",
     "botkit-storage-mongo": "^1.0.2",
     "feedme": "^0.3.2",
+    "kotlin": "^1.1.0",
     "mongodb": "^1.4.39",
     "node-google-translate-skidz": "^0.1.1",
     "request": "^2.74.0"
