@@ -4,7 +4,7 @@
   "description": "The awesomest bot evar.",
   "main": "index.js",
   "scripts": {
-    "start": "node js/index.js",
+    "start": "./gradlew build && node js/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
