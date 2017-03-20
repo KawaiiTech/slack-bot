@@ -30,7 +30,8 @@
     "feedme": "^0.3.2",
     "kotlin": "^1.1.0",
     "mongodb": "^1.4.39",
+    "nedb": "^1.8.0",
     "node-google-translate-skidz": "^0.1.1",
-    "request": "^2.74.0"
+    "request": "^2.81.0"
   }
 }

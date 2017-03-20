@@ -9,6 +9,8 @@ fun main(args: Array<String>) {
     val customIntegration = require("../lib/custom_integrations")
     val token = process.env.TOKEN ?: process.env.SLACK_TOKEN
     val controller = customIntegration.configure(token, config, ::onInstallation)
+    val database = Database()
+    val amazon = Amazon(database)
 
     controller.on("rtm_open", {
         println("** The RTM api just connected!")
@@ -22,6 +24,18 @@ fun main(args: Array<String>) {
     controller.hears("hello", "direct_message", { bot, message ->
         bot.reply(message, "Hello!")
     })
+    controller.hears("amazon all", "direct_message") { bot, message ->
+        println("Get All Price")
+        amazon.getAllPrice { bot.reply(message, it) }
+    }
+    controller.hears("amazon add (.*)", "direct_message") { bot, message ->
+        val match = message.match[1]
+        println("I heart $match")
+        database.insert(json("asin" to message.match[1])) { error: String, _ ->
+            if (error.isNullOrEmpty()) bot.reply(message, "Inserted $match")
+            else bot.reply(message, "Error: $error")
+        }
+    }
 }
 
 fun onInstallation(bot: dynamic, installer: dynamic) {
